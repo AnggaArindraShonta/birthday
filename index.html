@@ -39,6 +39,26 @@
         }
 
         /* Animations */
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        .animate-shake {
+            animation: shake 0.3s ease-in-out;
+        }
+
         .love {
             position: fixed;
             top: -20px;
@@ -69,8 +89,26 @@
             }
         }
 
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
         .fade-in {
-            animation: fadeIn 0.8s ease-out forwards;
+            animation: fadeIn 1s ease-out forwards;
         }
 
         @keyframes fadeIn {
@@ -150,53 +188,72 @@
         </div>
     </div>
 
-    <!-- Background Music (User interaction usually required, handled after unlock logic) -->
-    <audio id="bgMusic" loop>
-        <source src="music.mp3" type="audio/mpeg">
+    <!-- Background Music -->
+    <!-- Added play/pause button that appears if autoplay fails -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="src/music/music.mp3" type="audio/mpeg">
     </audio>
+    <button id="musicControl" onclick="toggleMusic()"
+        class="fixed top-4 right-4 z-[110] bg-white/80 backdrop-blur p-3 rounded-full shadow-lg text-rose-500 hidden hover:scale-110 transition-transform">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+            class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+        </svg>
+    </button>
 
     <!-- MAIN CONTENT -->
     <main id="main"
-        class="relative z-10 w-full min-h-screen flex flex-col items-center p-6 pb-24 transition-opacity duration-500">
+        class="relative z-10 w-full min-h-screen flex flex-col items-center justify-center p-6 pb-32 transition-opacity duration-700 opacity-0">
 
         <!-- Header -->
-        <header class="text-center mt-12 mb-10 fade-in" style="animation-delay: 0.2s">
-            <div class="inline-block relative">
-                <span class="absolute -top-6 -left-4 text-4xl animate-bounce">👑</span>
-                <span class="absolute -top-6 -right-4 text-4xl animate-bounce" style="animation-delay: 1s">👑</span>
+        <header class="text-center relative z-20">
+            <div class="inline-block relative mb-6">
+                <div class="absolute inset-0 bg-rose-400 blur-2xl opacity-20 animate-pulse rounded-full"></div>
                 <span
-                    class="inline-block px-5 py-2 rounded-full bg-white/80 backdrop-blur-sm text-rose-500 text-sm font-bold tracking-widest uppercase mb-4 shadow-sm border border-white/60">
-                    🎉 Special Day 🎉
+                    class="relative inline-block px-6 py-2 rounded-full bg-white/40 backdrop-blur-md border border-white/60 text-rose-600 text-xs font-bold tracking-[0.2em] uppercase shadow-lg animate-bounce"
+                    style="animation-duration: 3s;">
+                    ✨ The Special Day ✨
                 </span>
             </div>
-            <h1 class="text-5xl font-extrabold text-gray-800 leading-tight drop-shadow-sm">
-                Happy Birthday
-            </h1>
-            <div class="mt-2 relative inline-block">
-                <span
-                    class="font-handwriting text-7xl text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 drop-shadow-lg">
-                    Sayangku
-                </span>
-                <svg class="absolute -bottom-2 left-0 w-full h-3 text-rose-300 opacity-60" viewBox="0 0 100 10"
-                    preserveAspectRatio="none">
-                    <path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="3" fill="none" />
-                </svg>
+
+            <div class="relative">
+                <h1
+                    class="font-handwriting text-7xl md:text-8xl text-transparent bg-clip-text bg-gradient-to-br from-rose-500 via-pink-600 to-purple-600 drop-shadow-sm p-4 animate-float">
+                    Happy Birthday Sayangku
+                </h1>
             </div>
+
+            <p
+                class="mt-8 text-gray-700 font-medium max-w-xs mx-auto text-lg leading-relaxed glass px-6 py-3 rounded-2xl border-white/40">
+                Semoga hari ini jadi awal dari semua kebahagiaan sayang ❤️
+            </p>
         </header>
 
         <!-- Action Buttons -->
-        <div
-            class="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-white/95 via-white/80 to-transparent z-40 backdrop-blur-[4px]">
-            <div class="max-w-md mx-auto space-y-4">
+        <div class="absolute bottom-10 left-0 w-full px-6 flex justify-center z-30">
+            <div class="grid grid-cols-2 gap-4 w-full max-w-lg">
                 <button onclick="openLetter()"
-                    class="group w-full bg-white text-rose-500 font-bold py-4 rounded-2xl shadow-lg border border-rose-100 flex items-center justify-center gap-3 active:scale-95 transition-all hover:shadow-rose-100/50">
-                    <span class="text-2xl group-hover:scale-125 transition-transform">💌</span>
-                    <span class="text-lg">Baca Surat Cinta</span>
+                    class="group relative overflow-hidden bg-white/30 backdrop-blur-md border border-white/60 p-5 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div class="relative z-10 flex flex-col items-center gap-2">
+                        <span
+                            class="text-3xl filter drop-shadow-sm group-hover:scale-110 transition-transform duration-300">💌</span>
+                        <span class="font-bold text-rose-700 text-sm">Surat Cinta</span>
+                    </div>
                 </button>
+
                 <button onclick="showSurprise()"
-                    class="group w-full bg-gradient-to-r from-rose-500 to-pink-500 text-white font-bold py-4 rounded-2xl shadow-xl shadow-rose-200 flex items-center justify-center gap-3 active:scale-95 transition-all hover:shadow-rose-300/50">
-                    <span class="text-2xl group-hover:rotate-12 transition-transform">🎁</span>
-                    <span class="text-lg">Buka Kado Spesial</span>
+                    class="group relative overflow-hidden bg-gradient-to-br from-rose-500/90 to-pink-600/90 backdrop-blur-md border border-rose-400/30 p-5 rounded-3xl shadow-xl hover:shadow-rose-400/50 transition-all duration-300 hover:-translate-y-1">
+                    <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div class="relative z-10 flex flex-col items-center gap-2">
+                        <span
+                            class="text-3xl filter drop-shadow-sm group-hover:rotate-12 transition-transform duration-300">🎁</span>
+                        <span class="font-bold text-white text-sm">Kado Spesial</span>
+                    </div>
                 </button>
             </div>
         </div>
@@ -353,24 +410,58 @@
             letter: document.getElementById('letter'),
             surprise: document.getElementById('surprise'),
             countdown: document.getElementById('countdownlock'),
-            audio: document.getElementById(CONFIG.musicId)
+            audio: document.getElementById(CONFIG.musicId),
+            main: document.getElementById('main'),
+            musicBtn: document.getElementById('musicControl')
         };
 
         // Unlock logic
         function unlock() {
             if (els.passInput.value === CONFIG.password) {
+                // Unlock Animation
                 els.lock.style.opacity = '0';
                 els.lock.style.pointerEvents = 'none';
 
-                // Play music logic (must be interacting)
-                els.audio.play().catch(e => console.log('Autoplay blocked, user interaction needed first'));
+                // Play music logic 
+                els.audio.volume = 0.5; // Start with decent volume
+                const playPromise = els.audio.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        // playback started
+                        console.log("Music started playing");
+                    }).catch(error => {
+                        console.error("Auto-play blocked:", error);
+                        // Show manual play button if autoplay fails
+                        els.musicBtn.classList.remove('hidden');
+                    });
+                }
+
+                // Show main content with delay
+                setTimeout(() => {
+                    els.main.style.opacity = '1';
+                    els.main.classList.add('fade-in');
+                }, 500);
 
                 launchConfetti();
             } else {
                 els.errorMsg.classList.remove('hidden');
-                els.passInput.classList.add('border-red-400');
-                setTimeout(() => els.passInput.classList.remove('border-red-400'), 1000);
+                els.passInput.classList.add('border-red-400', 'animate-shake');
+                setTimeout(() => els.passInput.classList.remove('border-red-400', 'animate-shake'), 500);
             }
+        }
+
+        // Toggle Music Manually
+        let isMusicPlaying = true;
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                els.audio.pause();
+                els.musicBtn.classList.add('opacity-50');
+            } else {
+                els.audio.play();
+                els.musicBtn.classList.remove('opacity-50');
+            }
+            isMusicPlaying = !isMusicPlaying;
         }
 
         // Floating Love Animation
@@ -438,8 +529,13 @@
             els.surprise.classList.add('translate-y-full');
             setTimeout(() => {
                 els.surprise.classList.add('hidden');
-            }, 700); // match duration
+                document.getElementById('finalMessage').classList.remove('hidden');
+            }, 700);
         }
+        function closeFinal() {
+            document.getElementById('finalMessage').classList.add('hidden');
+        }
+
 
         // Confetti Effect
         function launchConfetti() {
@@ -455,6 +551,25 @@
             }
         }
     </script>
+
+    <div id="finalMessage"
+        class="fixed inset-0 z-[999] bg-white/80 backdrop-blur-xl hidden flex items-center justify-center px-6">
+        <div class="bg-white rounded-[2rem] p-8 text-center shadow-2xl max-w-sm fade-in">
+            <div class="text-4xl mb-4">🤍</div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                I’m so proud of you
+            </h2>
+            <p class="text-gray-600 leading-relaxed text-sm mb-6">
+                Terima kasih sudah jadi diri pribadi yang luar biasa.
+                Aku bangga punya sayang, hari ini dan seterusnya 🤍
+            </p>
+            <button onclick="closeFinal()"
+                class="bg-gradient-to-r from-rose-500 to-pink-500 text-white px-6 py-3 rounded-xl font-semibold shadow-lg">
+                Peluk Aku 🤍
+            </button>
+        </div>
+    </div>
+
 
 </body>
 
