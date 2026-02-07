@@ -123,6 +123,38 @@
             }
         }
 
+        .animate-pop {
+            animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes pop {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .flower-float {
+            animation: flowerFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes flowerFloat {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(2deg);
+            }
+        }
+
         /* Hide scrollbar for clean UI */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
@@ -319,6 +351,28 @@
         </div>
     </div>
 
+    <!-- FLOWER BOUQUET MODAL -->
+    <div id="flowerBouquet"
+        class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 transition-opacity duration-500">
+        <div
+            class="relative bg-white/90 backdrop-blur-xl p-8 rounded-[2rem] shadow-2xl text-center max-w-sm border-4 border-rose-200 animate-pop">
+            <button onclick="closeBouquet()"
+                class="absolute -top-4 -right-4 bg-rose-500 text-white rounded-full p-2 shadow-lg hover:bg-rose-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <div class="text-[8rem] leading-none mb-4 flower-float filter drop-shadow-xl">💐</div>
+
+            <h2 class="font-handwriting text-5xl text-rose-600 mb-2">Untukmu Sayang</h2>
+            <p class="text-gray-600 font-medium text-lg">
+                Bucket bunga ini spesial buat orang yang paling spesial di hatiku ❤️
+            </p>
+        </div>
+    </div>
+
     <!-- SURPRISE / GIFT MODAL -->
     <div id="surprise"
         class="fixed inset-0 z-50 bg-rose-50 flex flex-col hidden transition-transform duration-700 translate-y-full">
@@ -408,6 +462,7 @@
             passInput: document.getElementById('password'),
             errorMsg: document.getElementById('error'),
             letter: document.getElementById('letter'),
+            flowerBouquet: document.getElementById('flowerBouquet'),
             surprise: document.getElementById('surprise'),
             countdown: document.getElementById('countdownlock'),
             audio: document.getElementById(CONFIG.musicId),
@@ -517,6 +572,16 @@
         }
         function closeLetter() {
             els.letter.classList.add('hidden');
+            // Show flower bouquet after closing letter
+            setTimeout(() => {
+                els.flowerBouquet.classList.remove('hidden');
+                // Create extra confetti for the bouquet
+                launchConfetti();
+            }, 300);
+        }
+
+        function closeBouquet() {
+            els.flowerBouquet.classList.add('hidden');
         }
 
         function showSurprise() {
